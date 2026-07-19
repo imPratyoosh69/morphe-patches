@@ -6,7 +6,7 @@ import app.morphe.patcher.patch.resourcePatch
 @Suppress("unused")
 val systemFontPatch = resourcePatch(
     name = "Force system font",
-    description = "Strips custom typography declarations to force the app to use the true OS default system font.",
+    description = "Strips all typography and weight declarations to force 100% coverage of the OS default system font.",
     default = true
 ) {
     compatibleWith(Compatibility(
@@ -21,36 +21,40 @@ val systemFontPatch = resourcePatch(
         resDir.walkTopDown().filter { it.isFile && it.extension == "xml" }.forEach { xmlFile ->
             val originalText = xmlFile.readText()
 
-            // Added fontPath just in case they use third-party typography libraries
-            if (originalText.contains("fontFamily") || originalText.contains("fontPath")) {
+            // If it contains ANY typography-related keywords, process it
+            if (originalText.contains("font") || originalText.contains("textStyle") || originalText.contains("typeface")) {
                 var patchedText = originalText
 
                 // 1. ERADICATE STYLES & THEMES
-                // Removes the line entirely instead of hardcoding "sans-serif"
-                patchedText = patchedText.replace(
-                    Regex("""\s*<item name="android:fontFamily">[^<]+</item>"""),
-                    ""
+                val styleRegexes = listOf(
+                    """\s*<item name="android:fontFamily">[^<]+</item>""",
+                    """\s*<item name="fontFamily">[^<]+</item>""",
+                    """\s*<item name="android:font">[^<]+</item>""",
+                    """\s*<item name="font">[^<]+</item>""",
+                    """\s*<item name="android:typeface">[^<]+</item>""",
+                    """\s*<item name="typeface">[^<]+</item>""",
+                    """\s*<item name="android:textStyle">[^<]+</item>""",
+                    """\s*<item name="textStyle">[^<]+</item>"""
                 )
-                patchedText = patchedText.replace(
-                    Regex("""\s*<item name="fontFamily">[^<]+</item>"""),
-                    ""
-                )
+                styleRegexes.forEach { regex ->
+                    patchedText = patchedText.replace(Regex(regex), "")
+                }
 
                 // 2. ERADICATE HARDCODED LAYOUT ATTRIBUTES
-                patchedText = patchedText.replace(
-                    Regex("""\s*android:fontFamily="[^"]+""""),
-                    ""
+                val attrRegexes = listOf(
+                    """\s*android:fontFamily="[^"]+"""",
+                    """\s*app:fontFamily="[^"]+"""",
+                    """\s*android:font="[^"]+"""",
+                    """\s*app:font="[^"]+"""",
+                    """\s*app:fontPath="[^"]+"""",
+                    """\s*android:typeface="[^"]+"""",
+                    """\s*app:typeface="[^"]+"""",
+                    """\s*android:textStyle="[^"]+"""",
+                    """\s*app:textStyle="[^"]+""""
                 )
-                patchedText = patchedText.replace(
-                    Regex("""\s*app:fontFamily="[^"]+""""),
-                    ""
-                )
-                
-                // 3. ERADICATE CUSTOM VIEW FONT PATHS
-                patchedText = patchedText.replace(
-                    Regex("""\s*app:fontPath="[^"]+""""),
-                    ""
-                )
+                attrRegexes.forEach { regex ->
+                    patchedText = patchedText.replace(Regex(regex), "")
+                }
 
                 // Save the file if modifications were made
                 if (originalText != patchedText) {
@@ -59,5 +63,4 @@ val systemFontPatch = resourcePatch(
             }
         }
     }
-                    }
-                    
+}
