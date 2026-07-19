@@ -30,7 +30,6 @@ val bytecodeOverrides = bytecodePatch {
             val setContrastIndex = it.instructionMatches.first().index
             val setContrastReg = it.method.getInstruction<Instruction35c>(setContrastIndex).registerD
 
-            Opcode.INVOKE_VIRTUAL
             it.method.addInstructionsAtControlFlowLabel(setContrastIndex, """
                 const/4 v$setContrastReg, 0x0
             """.trimIndent())
@@ -42,7 +41,6 @@ val bytecodeOverrides = bytecodePatch {
 val amoledPatch = resourcePatch(
     name = "AMOLED dark theme",
     description = "Changes the default dark theme to use true blacks for AMOLED screens.",
-    default = false
 ) {
     dependsOn(bytecodeOverrides)
 
@@ -50,7 +48,7 @@ val amoledPatch = resourcePatch(
         name = "GitHub",
         packageName = "com.github.android",
         appIconColor = 0x000000,
-        targets = listOf(AppTarget("1.255.0"))
+        targets = listOf(AppTarget("1.267.0"))
     ))
 
     execute {

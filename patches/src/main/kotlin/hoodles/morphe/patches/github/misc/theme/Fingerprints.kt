@@ -11,7 +11,6 @@ object FunctionalColorsCtorFingerprint : Fingerprint(
 )
 
 object SetNavigationBarContrastFingerprint : Fingerprint(
-    strings = listOf("statusBarStyle", "navigationBarStyle", "window", "view"),
     filters = listOf(
         methodCall(name = "setNavigationBarContrastEnforced")
     )

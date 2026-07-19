@@ -2,6 +2,7 @@ package hoodles.morphe.patches.macrofactor.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patches.all.misc.fix.changepackageinstaller.changePackageInstallerPatch
 import hoodles.morphe.patches.macrofactor.misc.signature.spoofSignaturePatch
 import hoodles.morphe.patches.macrofactor.shared.Constants
 import hoodles.morphe.patches.shared.misc.extension.activityOnCreateExtensionHook
@@ -18,7 +19,7 @@ val enablePremiumPatch = bytecodePatch(
 ) {
     compatibleWith(*Constants.COMPATIBILITY)
 
-    dependsOn(extensionPatch, spoofSignaturePatch)
+    dependsOn(extensionPatch, spoofSignaturePatch, changePackageInstallerPatch())
 
     execute {
         BuildCustomerInfoFingerprint.method.addInstructions(0, """

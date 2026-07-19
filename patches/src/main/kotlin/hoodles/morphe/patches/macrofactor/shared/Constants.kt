@@ -12,7 +12,7 @@ object Constants {
             name = "MacroFactor",
             packageName = PACKAGE_NAME,
             appIconColor = 0x000000,
-            targets = listOf(AppTarget("5.7.8"))
+            targets = listOf(AppTarget("5.7.9"))
         ),
         Compatibility(
             name = "MacroFactor Workouts",
