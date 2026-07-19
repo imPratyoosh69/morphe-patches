@@ -2,14 +2,14 @@ package hoodles.morphe.patches.github.misc.font
 
 import app.morphe.patcher.patch.Compatibility
 import app.morphe.patcher.patch.resourcePatch
+import java.io.File
 
 @Suppress("unused")
-val forceSystemFontPatch = resourcePatch(
+val systemFontPatch = resourcePatch(
     name = "Force system font",
-    description = "Forces the app to use applied system font.",
+    description = "Strips custom typography declarations to force the app to use the OS default system font.",
     default = true
 ) {
-    // Target any version of GitHub
     compatibleWith(Compatibility(
         name = "GitHub",
         packageName = "com.github.android",
@@ -17,31 +17,43 @@ val forceSystemFontPatch = resourcePatch(
     ))
 
     execute {
-        // 1. NEUTRALIZE STYLES & THEMES
-        // This modifies resources.arsc. By renaming "fontFamily" to a dummy string,
-        // Android ignores the custom font requests and falls back to the system default.
-        resourceTable.stringPool.strings.forEachIndexed { index, string ->
-            if (string == "fontFamily" || string == "android:fontFamily") {
-                resourceTable.stringPool.setString(index, "ignoredFont")
-            }
-        }
+        // 'get' is provided by the Morphe DSL and returns a java.io.File wrapper.
+        // Passing 'true' tells Apktool to decode the directory if it hasn't been yet.
+        val resDir = get("res", true)
 
-        // 2. NEUTRALIZE HARDCODED LAYOUTS
-        // GitHub sometimes hardcodes fonts directly onto TextViews in layout files.
-        // We iterate through every compiled XML file and neutralize them there too.
-        xmlFiles.forEach { xmlFile ->
-            // Skip non-layout XMLs to speed up patching
-            if (xmlFile.name.startsWith("res/layout")) {
-                var modified = false
-                xmlFile.stringPool.strings.forEachIndexed { index, string ->
-                    if (string == "fontFamily" || string == "android:fontFamily") {
-                        xmlFile.stringPool.setString(index, "ignoredFont")
-                        modified = true
-                    }
-                }
-                // Save the file only if we actually changed something
-                if (modified) {
-                    xmlFile.save()
+        // Recursively walk through all XML files in the resources directory
+        resDir.walkTopDown().filter { it.isFile && it.extension == "xml" }.forEach { xmlFile ->
+            val originalText = xmlFile.readText()
+
+            // Only process files that actually mention a font family to save time
+            if (originalText.contains("fontFamily")) {
+                var patchedText = originalText
+
+                // 1. Replace style/theme declarations in styles.xml
+                // Changes <item name="fontFamily">@font/mona_sans</item> to sans-serif
+                patchedText = patchedText.replace(
+                    Regex("""<item name="android:fontFamily">[^<]+</item>"""),
+                    """<item name="android:fontFamily">sans-serif</item>"""
+                )
+                patchedText = patchedText.replace(
+                    Regex("""<item name="fontFamily">[^<]+</item>"""),
+                    """<item name="fontFamily">sans-serif</item>"""
+                )
+
+                // 2. Replace hardcoded layout attributes in layout/*.xml
+                // Changes app:fontFamily="@font/inter" to sans-serif
+                patchedText = patchedText.replace(
+                    Regex("""android:fontFamily="[^"]+""""),
+                    """android:fontFamily="sans-serif""""
+                )
+                patchedText = patchedText.replace(
+                    Regex("""app:fontFamily="[^"]+""""),
+                    """app:fontFamily="sans-serif""""
+                )
+
+                // Save the file if modifications were made
+                if (originalText != patchedText) {
+                    xmlFile.writeText(patchedText)
                 }
             }
         }
