@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-07-19T17:27:24",
-  "description": "# [1.40.0](https://github.com/imPratyoosh69/morphe-patches/compare/v1.39.0...v1.40.0) (2026-07-19)\n\n\n### Bug Fixes\n\n* **MacroFactor:** Bump version and spoof installer source ([cde3be0](https://github.com/imPratyoosh69/morphe-patches/commit/cde3be0710459043ebd1d622c9356a1388ef04e4))\n\n\n### Features\n\n* **Github:** Update patch to support v1.267 ([0a51f27](https://github.com/imPratyoosh69/morphe-patches/commit/0a51f27ba24e410ed0a813dffbc63780552e3a03))",
-  "download_url": "https://github.com/imPratyoosh69/morphe-patches/releases/download/v1.40.0/patches-1.40.0.mpp",
-  "signature_download_url": "https://github.com/imPratyoosh69/morphe-patches/releases/download/v1.40.0/patches-1.40.0.mpp.asc",
-  "version": "1.40.0"
+  "created_at": "2026-07-19T17:50:44",
+  "description": "## [1.40.1-dev.1](https://github.com/imPratyoosh69/morphe-patches/compare/v1.40.0...v1.40.1-dev.1) (2026-07-19)",
+  "download_url": "https://github.com/imPratyoosh69/morphe-patches/releases/download/v1.40.1-dev.1/patches-1.40.1-dev.1.mpp",
+  "signature_download_url": "https://github.com/imPratyoosh69/morphe-patches/releases/download/v1.40.1-dev.1/patches-1.40.1-dev.1.mpp.asc",
+  "version": "1.40.1-dev.1"
 }
