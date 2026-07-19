@@ -10,6 +10,18 @@
 
 * **Github:** Update patch to support v1.267 ([0a51f27](https://github.com/imPratyoosh69/morphe-patches/commit/0a51f27ba24e410ed0a813dffbc63780552e3a03))
 
+# [1.40.0-dev.1](https://github.com/imPratyoosh69/morphe-patches/compare/v1.39.0...v1.40.0-dev.1) (2026-07-19)
+
+
+### Bug Fixes
+
+* **MacroFactor:** Bump version and spoof installer source ([cde3be0](https://github.com/imPratyoosh69/morphe-patches/commit/cde3be0710459043ebd1d622c9356a1388ef04e4))
+
+
+### Features
+
+* **Github:** Update patch to support v1.267 ([0a51f27](https://github.com/imPratyoosh69/morphe-patches/commit/0a51f27ba24e410ed0a813dffbc63780552e3a03))
+
 # [1.40.0-dev.2](https://github.com/hoo-dles/morphe-patches/compare/v1.40.0-dev.1...v1.40.0-dev.2) (2026-07-17)
 
 
