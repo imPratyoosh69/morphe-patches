@@ -1,6 +1,4 @@
-## [1.40.1-dev.2](https://github.com/imPratyoosh69/morphe-patches/compare/v1.40.1-dev.1...v1.40.1-dev.2) (2026-07-19)
-
-## [1.40.1-dev.1](https://github.com/imPratyoosh69/morphe-patches/compare/v1.40.0...v1.40.1-dev.1) (2026-07-19)
+## [1.40.1](https://github.com/imPratyoosh69/morphe-patches/compare/v1.40.0...v1.40.1) (2026-07-19)
 
 # [1.40.0](https://github.com/imPratyoosh69/morphe-patches/compare/v1.39.0...v1.40.0) (2026-07-19)
 
